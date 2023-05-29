@@ -1,20 +1,46 @@
 const express = require('express');
 const router = express.Router();
+const bodyParser = require('body-parser');
+const app = express();
+
 const {User} = require('../model/User');
 
-// insert
-router.post('/insert', async (req,res) => {
-    console.log('/api/user/insert');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended : true}))
+
+const uploadPath =  __dirname + "../../uploads/user";
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination : (req, file, cb) => {
+        cb(null, uploadPath) // 파일 업로드 경로
+    },
+    filename : (req, file, cb) => {
+        cb(null, file.fieldname + "." + file.mimetype.split("/")[1]);
+    }
+})
+const upload = multer({storage : storage});
+
+// user join
+router.post('/join', upload.single("profile_img"), (req, res) => {
+    console.log('/api/user/join', req.body);
 
     const {userId, userPassword, email} = req.body;
+    const { fieldname, originalname , mimetype, destination, filename, path, size} = req.file;
+
+    const fileType  = mimetype.split("/")[1];
+    const file_name = fieldname + "." + fileType;
+    const file_path = uploadPath + "/" + filename;
+
     const user = new User({
          userId : userId,
          userPassword : userPassword,
-         email : email
+         email : email,
+         fileName : file_name,
+         filePath : file_path,
     });
-    try { 
     
-        await user.save()
+    try { 
+        user.save()
         .then(() => {
             res.status(200).json();
         })
