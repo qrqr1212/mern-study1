@@ -20,8 +20,7 @@ app.use(bodyParser.urlencoded({extended : true}))
 app.use('/api', require('./routes/index.js'));
 app.use('/api/user', require('./routes/user.js'));
 app.use('/api/process', require('./routes/login.js'));
-
-
+app.use('/api/board', require('./routes/board.js'));
 
 //Db connection
 mongoose.connect(MONGO_URL);

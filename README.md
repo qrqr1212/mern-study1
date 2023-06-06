@@ -16,7 +16,7 @@
 - multer
 - cookie-parser
 - jsonwebtoken // jwt 라이브러리 (토큰)
- 
+- mongoose-sequence (몽구스 스키마 시퀀스) 
 
 ## react install
 - http-proxy-middleware
@@ -24,5 +24,5 @@
 - axios
 - semantic-ui-react
 - semantic-ui-css
-
+- react-toastify
 

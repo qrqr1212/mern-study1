@@ -1,11 +1,18 @@
 import React, {useState, useEffect} from 'react';
 import { NavLink ,Routes, Route } from 'react-router-dom';
 import { Menu , Container } from 'semantic-ui-react';
-import 'semantic-ui-css/semantic.min.css'
-import './Css/common.css'
+import { ToastContainer, toast } from 'react-toastify';
+
 import Join from './pages/Join';
 import Users from './pages/Users';
+import Board from './pages/Board/BoardList';
 import Login from './pages/Login';
+import NewBoard from './pages/Board/NewBoard';
+import About from './pages/About';
+
+import "react-toastify/dist/ReactToastify.css";
+import 'semantic-ui-css/semantic.min.css'
+import './Css/common.css'
 
 function App() {
 
@@ -26,17 +33,32 @@ function App() {
   
   return (
     <div className="App">
+
+      <ToastContainer
+        position="top-center"
+        limit={1}
+        closeButton={false}
+        autoClose={3000}
+        hideProgressBar
+      />
+
       <Container>
         <Menu secondary>
           <Menu.Item as={NavLink} to="/join" name="join"></Menu.Item>
           <Menu.Item as={NavLink} to="/Users" name="Users"></Menu.Item>
+          <Menu.Item as={NavLink} to="/Board" name="Board"></Menu.Item>
           <Menu.Item as={NavLink} to="/login" name="login"></Menu.Item>
           <Menu.Item as={NavLink} to="/logout" name="logout"></Menu.Item>
+          <Menu.Item as={NavLink} to="/About" name="About"></Menu.Item>
+
         </Menu>
         <Routes>
           <Route path="/join" element={<Join />} ></Route>
           <Route path="/Users" element={<Users />}></Route>
+          <Route path="/Board" element={<Board />}></Route>
           <Route path="/login" element={<Login />}></Route>
+          <Route path="/NewBoard" element={<NewBoard />}></Route>
+          <Route path="/About" element={<About />}></Route>
         </Routes>
       </Container>
     </div>

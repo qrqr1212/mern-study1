@@ -3,6 +3,9 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const app = express();
 
+// 스키마
+const {User} = require('../model/User');
+
 //미들웨어
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}))
@@ -20,16 +23,26 @@ const storage = multer.diskStorage({
 })
 const upload = multer({storage : storage});
 
-// 스키마
-const {User} = require('../model/User');
+// 라우터
 
+// listAll
+router.get('/list', async (req,res) => {
+    console.log(' listAll => /api/users/list');
+    try {
+        const userList = await User.find();
+        return res.status(200).json({userList : userList});     
+        
+    } catch (error) {
+        return res.status(400).json(error)
+    }
+});
 
 // user join
 router.post('/join', upload.single("profile_img"), (req, res) => {
     console.log('/api/user/join', req.body);
 
     const {userId, userPassword, email} = req.body;
-    const { fieldname, originalname , mimetype, destination, filename, path, size} = req.file;
+    const {fieldname, originalname , mimetype, destination, filename, path, size} = req.file;
 
     const fileType  = mimetype.split("/")[1];
     const file_name = fieldname + "." + fileType;
@@ -46,26 +59,21 @@ router.post('/join', upload.single("profile_img"), (req, res) => {
     try { 
         user.save()
         .then(() => {
-            res.status(200).json();
+            res.status(200).json({
+                code : 200,
+                message : 'success'
+            });
         })
         .catch((error) => {
-            res.status(400).json(error);
+            res.status(400).json({
+                code : 400,
+                message : 'fail',
+                error : error,
+            });
         });
 
     } catch (error) {
         res.json(error);
-    }
-});
-
-// listAll
-router.get('/list', async (req,res) => {
-    console.log(' listAll => /api/users/list');
-    try {
-        const userList = await User.find();
-        return res.status(200).json({userList : userList});     
-        
-    } catch (error) {
-        return res.status(400).json(error)
     }
 });
 

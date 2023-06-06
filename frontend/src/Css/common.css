@@ -11,3 +11,9 @@ input[type="text"] {
 h5 {
     text-align: center;
 }
+
+.divBtnAlignCenter {
+    display: flex;
+    justify-content:  center;
+    align-items: center;   
+}

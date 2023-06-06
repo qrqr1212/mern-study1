@@ -1,10 +1,12 @@
-import React,{useState, useRef,useEffect} from 'react'
-import {Button, Checkbox, Form} from 'semantic-ui-react'
-import '../Css/common.css'
+import React,{useState, useRef,useEffect} from 'react';
+import {Button, Checkbox, Form} from 'semantic-ui-react';
+import { ToastContainer, toast } from 'react-toastify';
+import {useNavigate} from "react-router-dom";
 
 const Login = () => {
-
+    const navigate = useNavigate();
     const inputRef = useRef();
+
     useEffect(() => {
         inputRef.current.focus();
     },[]);
@@ -26,7 +28,7 @@ const Login = () => {
         });
     }
 
-    const onSubmitHandler = (e) => {
+    const onSubmitHandler =  (e) => {
         e.preventDefault();
 
         let body = {
@@ -45,13 +47,18 @@ const Login = () => {
             const token = result.token;
 
             if(userInfo) {
-                alert(`${userInfo.userId}님 반갑습니다.`);
-                // front 로컬 스토리지에 저장 (아이디, 토큰)
                 localStorage.clear();
                 localStorage.setItem("userId", userInfo.userId);
                 localStorage.setItem("token", token);
 
-                document.location.href = '/'
+                toast.success(`${userInfo.userId} 님 반갑습니다. `, {
+                    position : "top-center",
+                    autoClose : 2000,
+                });
+                setTimeout(() => {
+                    navigate("/");
+                }, 2000);
+
             }  else {
                 alert("아이디가 존재하지 않거나 패스워드가 일치하지 않습니다.");
             }
