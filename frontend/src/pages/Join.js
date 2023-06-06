@@ -1,12 +1,17 @@
 // 함수형 컴포넌트
 import React,{useState, useEffect} from 'react'; 
-import {Button} from 'semantic-ui-react'
+import {Button, Checkbox, Form} from 'semantic-ui-react'
 
-const Home = () => {
-
+const Join = () => {
     const [userId, setUserId] = useState("");
     const [userPassword, setUserPassword] = useState("");
     const [email, setEmail] = useState("");
+
+    const [profileImg,setProfileImg] = useState(null);
+
+    const imageHandler = (e) => {
+        setProfileImg(e.target.files[0]);
+    }
 
     const userIdHandler = (e) => {
         e.preventDefault();
@@ -26,46 +31,69 @@ const Home = () => {
     const submitHandler = (e) => {
         e.preventDefault();
 
-        let body = {
-            userId : userId,
-            userPassword : userPassword,
-            email : email,
-        }
+        const formData = new FormData();
+        formData.append( "userId" , userId);
+        formData.append( "userPassword" , userPassword);
+        formData.append( "email" , email);
+        formData.append("profile_img", profileImg);
 
-        fetch("http://localhost:5000/api/user/insert", {
+        fetch("http://localhost:5000/api/user/join", {
             method : 'post',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body : JSON.stringify(body)
+            body : formData,
         })
         .then((res) => res.json())
-        .then((res) => {
-            alert(res.result);
+        .then((result) => {
+            alert('success', result);
         })
+
     }
 
     return (
-        <div>
-            <h1>회원가입</h1>
-            <form onSubmit={submitHandler}>
-                <div>
-                    <label> id : </label>
-                    <input type="text" name="userId" onChange={userIdHandler} />
-                </div>
-                <div>
-                    <label> password : </label>
-                    <input type="text" name="userPassword" onChange={userPasswordHandler} />
-                </div>
-                <div>
-                    <label> email : </label>
-                    <input type="text" name="email" onChange={emailHandler} />
-                </div> 
-                 
-                <Button primary type="submit">Join</Button>                             
-            </form>
-        </div>
+        <React.Fragment>
+
+            <h5>회원가입</h5>
+            <div className="ComponentBox">
+                
+                    
+                <Form onSubmit={submitHandler} encType='multipart/form-data'>
+
+                    <Form.Field>
+                        <input type='file' 
+                            accept='image/jpg,impge/png,image/jpeg,image/gif' 
+                            name='profileImg' 
+                            onChange={ imageHandler }>
+                        </input>
+                    </Form.Field>
+
+                    <Form.Field>
+                        <label>ID</label>
+                        <input name="userId" 
+                            placehorder="user id" 
+                            value={userId} 
+                            onChange={userIdHandler} />
+                    </Form.Field>
+
+                    <Form.Field>
+                        <label>Password</label>
+                        <input name="userPassword" 
+                            placehorder="password" 
+                            value={userPassword} 
+                            onChange={userPasswordHandler}/>
+                    </Form.Field> 
+
+                    <Form.Field>
+                        <label>email</label>
+                        <input name="email" 
+                            placehorder="email" 
+                            value={email}
+                            onChange={emailHandler} />
+                    </Form.Field>                    
+
+                    <Button type="submit"  >Join</Button>                         
+                </Form>
+            </div>
+        </React.Fragment>
     )
 }
 
-export default Home;
+export default Join;

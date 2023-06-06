@@ -7,17 +7,21 @@ const fileUpload = require("express-fileupload");
 const app = express();
 const router = express.Router();
 
-const PORT = 5000;
-const MONGO_URL = 'mongodb://localhost:27017/testDB';
+require('dotenv').config(); // 환경 변수 모듈 불러오기
+const PORT = process.env.PORT;
+const MONGO_URL = process.env.MONGO_URL;
 
 //middleware
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}))
+
 // router
 app.use('/api', require('./routes/index.js'));
 app.use('/api/user', require('./routes/user.js'));
-//app.use('/api/user/upload', require('./routes/upload.js'));
+app.use('/api/process', require('./routes/login.js'));
+
+
 
 //Db connection
 mongoose.connect(MONGO_URL);

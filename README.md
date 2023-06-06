@@ -3,6 +3,7 @@
 ##### 2023.05.19 - 프로젝트 시작
 ##### 2023.05.23 - server CRUD 로직 및 router 분리
 ##### 2023.05.24 - semantic UI 추가 (간단한 css 적용)
+##### 2023.05.29 - multer 사용자 이미지 업로드 
 
 ## npm install 
 - express
@@ -12,6 +13,10 @@
 - concurrently
 - method-override
 - nodemon
+- multer
+- cookie-parser
+- jsonwebtoken // jwt 라이브러리 (토큰)
+ 
 
 ## react install
 - http-proxy-middleware

@@ -3,11 +3,11 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const app = express();
 
-const {User} = require('../model/User');
-
+//미들웨어
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}))
 
+// 업로드 설정
 const uploadPath =  __dirname + "../../uploads/user";
 const multer = require('multer');
 const storage = multer.diskStorage({
@@ -19,6 +19,10 @@ const storage = multer.diskStorage({
     }
 })
 const upload = multer({storage : storage});
+
+// 스키마
+const {User} = require('../model/User');
+
 
 // user join
 router.post('/join', upload.single("profile_img"), (req, res) => {
