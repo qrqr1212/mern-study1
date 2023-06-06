@@ -6,7 +6,7 @@ import {Icon, Label, Menu, Table} from 'semantic-ui-react'
 const User = ({ userData }) => {
     return (
         <Table.Row>
-            <Table.Cell></Table.Cell>
+            <Table.Cell><img src="http://localhost:5000/backend/uploads/meme.jpeg"/></Table.Cell>
             <Table.Cell>{userData.userId}</Table.Cell>
             <Table.Cell>{userData.email}</Table.Cell>
         </Table.Row>
